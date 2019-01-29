@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd OpenMPI
+cd ContainerFiles
 
 if [ -d "ssh" ]; then
   chmod u+rw -R ssh

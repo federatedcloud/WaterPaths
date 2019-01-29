@@ -9,7 +9,7 @@ export BASEDIR
 #
 # **** Pick a Distro to build below by uncommenting a section ****
 #
-source "Base/alpine_envs.sh"
+source "ContainerFiles/alpine_envs.sh"
 
 source "Utils/image_tag.sh"
 NIXUSER="nixuser"
@@ -21,6 +21,6 @@ echo "NIX_OMPI_IMAGE is $NIX_OMPI_IMAGE"
 
 # echo "SINGULARITY_DOCKER_USERNAME is set to ${SINGULARITY_DOCKER_USERNAME}"
 # echo "SINGULARITY_DOCKER_PASSWORD is set to ${SINGULARITY_DOCKER_PASSWORD}"
-cat "SingTemplateOpenMPI" | envsubst '${BASEOS} ${ENVSDIR}' > "Singularity.${NIX_OMPI_IMAGE}"
+cat "SingTemplate" | envsubst '${BASEOS} ${ENVSDIR}' > "Singularity.${NIX_OMPI_IMAGE}"
 sudo singularity --debug build "${NIX_OMPI_IMAGE}.img" "Singularity.${NIX_OMPI_IMAGE}"
 sudo chown "$SING_USER:$SING_GROUP" "${NIX_OMPI_IMAGE}.img"
