@@ -4,7 +4,7 @@ source "ContainerFiles/generate-keys.sh"
 source "ContainerFiles/alpine_envs.sh"
 
 source "Utils/image_tag.sh"
-REPO="nix_${BASEOS}_openmpi"
+REPO="nix_${BASEOS}_waterpaths"
 TAG=$(git_image_tag)
 export NIX_OMPI_IMAGE="${REPO}:${TAG}"
 echo "NIX_OMPI_IMAGE is $NIX_OMPI_IMAGE"

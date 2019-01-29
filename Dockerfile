@@ -1,5 +1,5 @@
 ARG BASEOS
-FROM nix_${BASEOS}_base:44cce3d948f38408bc97addb699ba02cc479df8e
+FROM cornellcac/nix_${BASEOS}_base:2cd324f48c57f66d476a7894c6a957a78e49b116111
 
 USER root
 ARG ADDUSER

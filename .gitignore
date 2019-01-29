@@ -20,3 +20,8 @@ triangleSimulation
 # Editor files
 #
 *~
+
+#
+# Container files
+#
+ContainerFiles/ssh
