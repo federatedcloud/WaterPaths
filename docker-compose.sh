@@ -11,7 +11,7 @@
 # See build-openmpi.sh for a simpler way to build the docker image, without compose
 #
 
-# shellcheck source=Base/OpenMPI/build.sh
+# shellcheck source=Base/ContainerFiles/build.sh
 source build-openmpi.sh
 docker-compose -f docker-compose-openmpi.yml "$@"
 

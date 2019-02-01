@@ -13,7 +13,7 @@ Use Makefile provided in source directory. E.g., if using GCC run `make gcc`
 ### Using Nix or NixOS
 
 ```
-nix-shell -I ssh-config-file=./.ssh-standard-config -I ssh-auth-sock=$SSH_AUTH_SOCK shell.nix
+nix-shell -I ssh-config-file=./nix/.ssh-standard-config -I ssh-auth-sock=$SSH_AUTH_SOCK nix/shell.nix
 ```
 
 ## Running WaterPaths

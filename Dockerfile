@@ -4,8 +4,8 @@ FROM cornellcac/nix_${BASEOS}_base:2cd324f48c57f66d476a7894c6a957a78e49b116
 USER root
 ARG ADDUSER
 
-COPY OpenMPI/config.nix $HOME/.config/nixpkgs/
-COPY OpenMPI/dev-env.nix $ENVSDIR/
+COPY ContainerFiles/config.nix $HOME/.config/nixpkgs/
+COPY ContainerFiles/dev-env.nix $ENVSDIR/
 COPY Utils/persist-env.sh $ENVSDIR/
 RUN chown -R $nixuser:$nixuser $ENVSDIR
 
@@ -14,6 +14,8 @@ RUN chown -R $nixuser:$nixuser $ENVSDIR
 #
 USER $nixuser
 RUN $nixenv && cd /tmp && sh $ENVSDIR/persist-env.sh $ENVSDIR/dev-env.nix
+RUN cd $HOME && git clone https://github.com/bernardoct/WaterPaths.git && \
+  cd WaterPaths && git checkout d30787135a329b877dfaf8d1e239f46dd43d1f2f
 #
 
 USER root
@@ -47,10 +49,10 @@ ENV SSHDIR ${HOME}/.ssh/
 
 RUN mkdir -p ${SSHDIR}
 
-ADD OpenMPI/ssh/config ${SSHDIR}/config
-ADD OpenMPI/ssh/id_rsa.mpi ${SSHDIR}/id_rsa
-ADD OpenMPI/ssh/id_rsa.mpi.pub ${SSHDIR}/id_rsa.pub
-ADD OpenMPI/ssh/id_rsa.mpi.pub ${SSHDIR}/authorized_keys
+ADD ContainerFiles/ssh/config ${SSHDIR}/config
+ADD ContainerFiles/ssh/id_rsa.mpi ${SSHDIR}/id_rsa
+ADD ContainerFiles/ssh/id_rsa.mpi.pub ${SSHDIR}/id_rsa.pub
+ADD ContainerFiles/ssh/id_rsa.mpi.pub ${SSHDIR}/authorized_keys
 
 USER root
 
@@ -58,25 +60,18 @@ RUN chmod -R 600 ${SSHDIR}* && \
     chown -R ${nixuser}:${nixuser} ${SSHDIR}
 
 # ------------------------------------------------------------
-# Configure OpenMPI
+# Configure ContainerFiles
 # ------------------------------------------------------------
 
 RUN rm -fr ${HOME}/.openmpi && mkdir -p ${HOME}/.openmpi
-ADD OpenMPI/default-mca-params.conf ${HOME}/.openmpi/mca-params.conf
+ADD ContainerFiles/default-mca-params.conf ${HOME}/.openmpi/mca-params.conf
 RUN chown -R ${nixuser}:${nixuser} ${HOME}/.openmpi
-
-# ------------------------------------------------------------
-# Copy MPI4PY example scripts
-# ------------------------------------------------------------
 
 ENV TRIGGER 1
 
-ADD OpenMPI/mpi4py_benchmarks ${HOME}/mpi4py_benchmarks
-RUN chown -R ${nixuser}:${nixuser} ${HOME}/mpi4py_benchmarks
-
 #Copy this last to prevent rebuilds when changes occur in them:
-COPY OpenMPI/entrypoint* $ENVSDIR/
-COPY OpenMPI/default.nix $ENVSDIR/
+COPY ContainerFiles/entrypoint* $ENVSDIR/
+COPY ContainerFiles/default.nix $ENVSDIR/
 
 RUN chown $nixuser:$nixuser $ENVSDIR/entrypoint
 ENV PATH="${PATH}:/usr/local/bin"

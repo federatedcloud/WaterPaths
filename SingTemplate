@@ -13,12 +13,11 @@ export PATH="${PATH}:/usr/local/bin"
 
 %files
 Utils/persist-env.sh $ENVSDIR/
-OpenMPI/config.nix /template/hometmp/.config/nixpkgs/
-OpenMPI/dev-env.nix $ENVSDIR/
-OpenMPI/mpi4py_benchmarks $ENVSDIR/
-OpenMPI/entrypoint* $ENVSDIR/
-OpenMPI/default.nix $ENVSDIR/
-OpenMPI/default.sh $ENVSDIR/
+ContainerFiles/config.nix /template/hometmp/.config/nixpkgs/
+ContainerFiles/dev-env.nix $ENVSDIR/
+ContainerFiles/entrypoint* $ENVSDIR/
+ContainerFiles/default.nix $ENVSDIR/
+ContainerFiles/default.sh $ENVSDIR/
 
 %runscript
 

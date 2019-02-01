@@ -6,6 +6,8 @@ with import <nixpkgs> { };
 { openmpiDevEnv = buildEnv {
   name = "openmpi-dev-env";
   paths = [
+    git
+    
     #
     # Always include nix, or environment will break
     # Include bash for base OSes without bash
