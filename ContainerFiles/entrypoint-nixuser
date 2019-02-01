@@ -5,4 +5,5 @@ ${SOURCE_NIX}
 #
 # Preload required packages into nix-store
 #
-nix-shell "$ENVSDIR/default.nix"
+cd "$HOME/WaterPaths/" || exit 1
+nix-shell nix/shell.nix

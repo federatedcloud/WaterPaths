@@ -36,3 +36,39 @@ To run WaterPaths in optimization mode, WaterPaths needs to be re-compiled with 
 1. In order to run WaterPaths with Borg, the library libborgmm.a must be provided in the /lib folder. To do so, borgmoea.org/ and request a licence, move Borg files to the folder /borg, compile borg by running `make mpi` in /borg, and finally move the file libborgmm.a to the /lib folder.
 2. After libborgmm.a is compiled and place in /lib, compile WaterPaths with `make borg`.
 3. Run WaterPaths with `mpirun -n 5 triangleSimulation -T 4 -t 2344 -r 16 -d /mnt/c/Users/Bernardo/CLionProjects/WaterPaths/ -I _few_records -s decvars.csv -m 0 -b true`. Keep in mind that the number of MPI processes must be at least 3 but the minimum recommended is 5. also keep in mind that each MPI process will try to create the number of threads specified with flag -T.
+
+## Using Containers
+
+The containers enompass the nix instructions described above, but use
+a container with nix, so there is no need to install it yourself.
+
+### Docker
+
+#### Building
+
+As WaterPaths depends on Borg, you will need to:
+
+1. [obtain a license](http://borgmoea.org/) for Borg, after which you should obtain access to the repository on BitBucket
+2. Generate an ssh key, e.g. `ssh-keygen -t rsa -b 4096 -N "" -C "your_email@example.com" -f ~/.ssh/bitbucket_no_pass`. Your email address should ideally be an email address associated with your bitbucket account.
+3. Add the public component of the ssh key to your BitBucket account (`bitbucket_no_pass.pub` in the example above).
+4. Copy the **private** ssh key to `id_rsa` in this repository's root (note that `id_rsa` is `.gitignore`d, but still do be careful): `cp ~/.ssh/bitbucket_no_pass ./id_rsa`, assuming you are in the WaterPaths directory.
+
+Then, we can proceed as we normally might:
+
+```
+source build-docker.sh
+```
+
+#### Running Locally
+
+```
+source docker-compose.sh up --scale mpi_head=1 --scale mpi_node=3
+docker exec -u nixuser -it waterpaths_mpi_head_1 /bin/sh
+cd ~/WaterPaths
+```
+
+Now you should be able to follow the "Running WaterPaths" directions above.
+
+### Singularity
+
+(Work in progress)

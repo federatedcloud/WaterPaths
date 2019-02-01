@@ -12,7 +12,7 @@
 #
 
 # shellcheck source=Base/ContainerFiles/build.sh
-source build-openmpi.sh
-docker-compose -f docker-compose-openmpi.yml "$@"
+source build-docker.sh
+docker-compose -f docker-compose.yml "$@"
 
 

@@ -6,16 +6,25 @@ ARG ADDUSER
 
 COPY ContainerFiles/config.nix $HOME/.config/nixpkgs/
 COPY ContainerFiles/dev-env.nix $ENVSDIR/
+# Note, below is generated with:
+# ssh-keyscan bitbucket.org > ContainerFiles/bitbucket_ssh_keyscan
+COPY ContainerFiles/bitbucket_ssh_keyscan /tmp/
 COPY Utils/persist-env.sh $ENVSDIR/
+COPY id_rsa $HOME/.ssh/id_rsa
 RUN chown -R $nixuser:$nixuser $ENVSDIR
+RUN chown -R $nixuser:$nixuser $HOME/.ssh
 
 #
 # Initialize environment a bit for faster container spinup/use later
 #
 USER $nixuser
 RUN $nixenv && cd /tmp && sh $ENVSDIR/persist-env.sh $ENVSDIR/dev-env.nix
-RUN cd $HOME && git clone https://github.com/bernardoct/WaterPaths.git && \
-  cd WaterPaths && git checkout d30787135a329b877dfaf8d1e239f46dd43d1f2f
+RUN $nixenv && cd $HOME && \
+  cat /tmp/bitbucket_ssh_keyscan >> $HOME/.ssh/known_hosts && \
+  git clone https://github.com/FederatedCloud/WaterPaths.git && \
+  cd WaterPaths && git checkout 8fedcc2a2609bab6af980ac1d8d9c6db28f9cc2d && \
+  nix-shell -I ssh-config-file=./nix/.ssh-standard-config -I ssh-auth-sock=$SSH_AUTH_SOCK nix/shell.nix --run "make borg" && \
+  rm -f $HOME/.ssh/id_rsa
 #
 
 USER root
@@ -71,7 +80,6 @@ ENV TRIGGER 1
 
 #Copy this last to prevent rebuilds when changes occur in them:
 COPY ContainerFiles/entrypoint* $ENVSDIR/
-COPY ContainerFiles/default.nix $ENVSDIR/
 
 RUN chown $nixuser:$nixuser $ENVSDIR/entrypoint
 ENV PATH="${PATH}:/usr/local/bin"
