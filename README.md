@@ -73,6 +73,15 @@ docker exec -u nixuser -it waterpaths_mpi_head_1 /bin/sh
 cd ~/WaterPaths
 ```
 
+Then you can run with Borg in MPI-mode, e.g.:
+
+```
+mpirun -n 4 triangleSimulation -T 4 -t 2344 -r 16 -d /home/nixuser/WaterPaths/ -I _few_records -s decvars.csv -m 0 -b t
+rue
+```
+
+Note that we use `-n 4`: `-n 5` would not work since we only have 4 nodes (really, containers): 3 nodes plus 1 head node.
+
 Now you should be able to follow the "Running WaterPaths" directions above.
 
 ### Singularity

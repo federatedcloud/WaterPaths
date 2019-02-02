@@ -16,7 +16,6 @@ Utils/persist-env.sh $ENVSDIR/
 ContainerFiles/config.nix /template/hometmp/.config/nixpkgs/
 ContainerFiles/dev-env.nix $ENVSDIR/
 ContainerFiles/entrypoint* $ENVSDIR/
-ContainerFiles/default.nix $ENVSDIR/
 ContainerFiles/default.sh $ENVSDIR/
 
 %runscript
