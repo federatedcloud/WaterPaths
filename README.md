@@ -10,12 +10,6 @@ WaterPaths - A utility planning and management tool based off the NC Triangle mo
 ## Compiling WaterPaths
 Use Makefile provided in source directory. E.g., if using GCC run `make gcc`
 
-### Using Nix or NixOS
-
-```
-nix-shell -I ssh-config-file=./nix/.ssh-standard-config -I ssh-auth-sock=$SSH_AUTH_SOCK nix/shell.nix
-```
-
 ## Running WaterPaths
 Running `triangleSimulation -?` will give you a list of flags to call WaterPaths with.
 
@@ -36,6 +30,18 @@ To run WaterPaths in optimization mode, WaterPaths needs to be re-compiled with 
 1. In order to run WaterPaths with Borg, the library libborgmm.a must be provided in the /lib folder. To do so, borgmoea.org/ and request a licence, move Borg files to the folder /borg, compile borg by running `make mpi` in /borg, and finally move the file libborgmm.a to the /lib folder.
 2. After libborgmm.a is compiled and place in /lib, compile WaterPaths with `make borg`.
 3. Run WaterPaths with `mpirun -n 5 triangleSimulation -T 4 -t 2344 -r 16 -d /mnt/c/Users/Bernardo/CLionProjects/WaterPaths/ -I _few_records -s decvars.csv -m 0 -b true`. Keep in mind that the number of MPI processes must be at least 3 but the minimum recommended is 5. also keep in mind that each MPI process will try to create the number of threads specified with flag -T.
+
+## Using Nix or NixOS
+
+Nix is a reproducible package management system with several other features. Start up a nix shell with
+(this assumes ~/.ssh/id_rsa is linked to your BitBucket account and that you have access to Borg on
+BitBucket):
+
+```
+nix-shell -I ssh-config-file=./nix/.ssh-standard-config -I ssh-auth-sock=$SSH_AUTH_SOCK nix/shell.nix
+```
+
+You should then be able to build WaterPaths as described above.
 
 ## Using Containers
 

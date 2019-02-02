@@ -21,8 +21,8 @@ USER $nixuser
 RUN $nixenv && cd /tmp && sh $ENVSDIR/persist-env.sh $ENVSDIR/dev-env.nix
 RUN $nixenv && cd $HOME && \
   cat /tmp/bitbucket_ssh_keyscan >> $HOME/.ssh/known_hosts && \
-  git clone https://github.com/FederatedCloud/WaterPaths.git && \
-  cd WaterPaths && git checkout 8fedcc2a2609bab6af980ac1d8d9c6db28f9cc2d && \
+  git clone https://github.com/bernardoct/WaterPaths.git && \
+  cd WaterPaths && git checkout 7b380c388c08e9891e345c59125af7b077fd218b && \
   nix-shell -I ssh-config-file=./nix/.ssh-standard-config -I ssh-auth-sock=$SSH_AUTH_SOCK nix/shell.nix --run "make borg" && \
   rm -f $HOME/.ssh/id_rsa
 #
